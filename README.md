@@ -1,7 +1,13 @@
 DESCRIPTION
 ===========
 
-Configures networking.
+This is a modified version of the networking cookbook from OpenStreetMap. It it based on a checkout of the [mirror on GitHub](https://github.com/pnorman/openstreetmap-chef) of the main repository.
+
+This recipe configures networking.
+
+## Modifications:
+  * Removed `.openstreetmap.org` postfix on hostname
+  * Removed internal network zones
 
 USAGE
 =====
