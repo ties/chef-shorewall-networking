@@ -1,5 +1,9 @@
-# DO NOT EDIT - This file is being maintained by Chef
-
-# FROM		TO		POLICY		LOG LEVEL	BURST:LIMIT
-net		all		DROP
-all		all		ACCEPT
+#
+# DO NOT EDIT - This file is managed by Chef
+#
+###############################################################################
+#SOURCE		DEST		POLICY		LOG LEVEL	LIMIT:BURST
+$FW		net		ACCEPT
+net		all		DROP		info
+# The FOLLOWING POLICY MUST BE LAST
+all		all		REJECT		info

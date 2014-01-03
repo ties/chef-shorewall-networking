@@ -23,6 +23,11 @@
 require "ipaddr"
 
 node[:networking][:interfaces].each do |name,interface|
+  # implicitly set the default family to inet
+  if not interface[:family]
+        node.default[:networking][:interfaces][name][:family] = 'inet'
+  end
+
   if interface[:role] and role = node[:networking][:roles][interface[:role]]
     if role[interface[:family]]
       node.default[:networking][:interfaces][name][:prefix] = role[interface[:family]][:prefix]
@@ -33,10 +38,13 @@ node[:networking][:interfaces].each do |name,interface|
     node.default[:networking][:interfaces][name][:zone] = role[:zone]
   end
 
-  prefix = node[:networking][:interfaces][name][:prefix]
+  # prefix/gateway/etc only make sense when setting a manual address
+  unless interface[:address].casecmp("dhcp")
+    prefix = node[:networking][:interfaces][name][:prefix]
 
-  node.default[:networking][:interfaces][name][:netmask] = (~IPAddr.new(interface[:address]).mask(0)).mask(prefix)
-  node.default[:networking][:interfaces][name][:network] = IPAddr.new(interface[:address]).mask(prefix)
+    node.default[:networking][:interfaces][name][:netmask] = (~IPAddr.new(interface[:address]).mask(0)).mask(prefix)
+    node.default[:networking][:interfaces][name][:network] = IPAddr.new(interface[:address]).mask(prefix)
+  end
 end
 
 template "/etc/network/interfaces" do
@@ -199,18 +207,6 @@ firewall_rule "limit-icmp-echo" do
   rate_limit "s:1/sec:5"
 end
 
-[ "ucl", "ic", "bm" ].each do |zone|
-  firewall_rule "accept-openvpn-#{zone}" do
-    action :accept
-    family :inet
-    source zone
-    dest "fw"
-    proto "udp"
-    dest_ports "1194:1196"
-    source_ports "1194:1196"
-  end
-end
-
 if node[:roles].include?("gateway")
   template "/etc/shorewall/masq" do
     source "shorewall-masq.erb"
@@ -305,18 +301,10 @@ if not node.interfaces(:family => :inet6).empty?
   end
 end
 
-firewall_rule "accept-http" do
-  action :accept
-  source "net"
-  dest "fw"
-  proto "tcp:syn"
-  dest_ports "http"
-end
-
-firewall_rule "accept-https" do
-  action :accept
-  source "net"
-  dest "fw"
-  proto "tcp:syn"
-  dest_ports "https"
+node[:networking][:rules].each do |name,rule|
+  firewall_rule name do
+    action  rule[:action]
+    source  rule[:source]
+    dest    rule[:dest]
+  end
 end

@@ -8,6 +8,9 @@ This recipe configures networking.
 ## Modifications:
   * Removed `.openstreetmap.org` postfix on hostname
   * Removed internal network zones
+  * Support DHCP
+  * Accept SSH from the internet by default (see `attributes/default.rb`)
+  * Added default (Google) nameservers as fallback
 
 USAGE
 =====

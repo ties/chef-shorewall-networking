@@ -2,13 +2,18 @@
 
 iface lo inet loopback
 <% node[:networking][:interfaces].each do |name,interface| -%>
-
+<% if interface[:address].casecmp("dhcp") -%>
+# <%= interface[:interface] %> with DHCP 
+iface <%= interface[:interface] %> <%= interface[:family] %> dhcp
+<% else -%>
+# <%= interface[:interface] %> with static address
 iface <%= interface[:interface] %> <%= interface[:family] %> static
       address   <%= interface[:address] %>
-<% if interface[:family] == "inet" -%>
-      netmask   <%= interface[:netmask] %>
-<% elsif interface[:family] == "inet6" -%>
-      netmask   <%= interface[:prefix] %>
+      <% if interface[:family] == "inet" -%>
+            netmask   <%= interface[:netmask] %>
+      <% elsif interface[:family] == "inet6" -%>
+            netmask   <%= interface[:prefix] %>
+      <% end -%>
 <% end -%>
 <% if interface[:hwaddress] -%>
       hwaddress <%= interface[:hwaddress] %>
