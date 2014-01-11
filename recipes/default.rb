@@ -207,7 +207,7 @@ firewall_rule "limit-icmp-echo" do
   rate_limit "s:1/sec:5"
 end
 
-if node[:roles].include?("gateway")
+if node[:roles].include?("gateway") or node[:networking][:gateway]
   template "/etc/shorewall/masq" do
     source "shorewall-masq.erb"
     owner "root"
