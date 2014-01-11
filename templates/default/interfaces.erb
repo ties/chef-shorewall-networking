@@ -37,4 +37,4 @@ iface <%= interface[:interface] %> <%= interface[:family] %> static
 <% end -%>
 <% end -%>
 
-auto lo <%= node[:networking][:interfaces].collect { |n,i| i[:interface] }.sort.uniq.join(" ") %>
+auto lo <%= node[:networking][:interfaces].select{|n,i| i[:require_at_boot].nil? or i[:require_at_boot] == true}.collect { |n,i| i[:interface] }.sort.uniq.join(" ") %>
