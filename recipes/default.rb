@@ -168,6 +168,7 @@ template "/etc/shorewall/interfaces" do
   owner "root"
   group "root"
   mode 0644
+  variables :interfaces => node[:networking][:interfaces] 
   notifies :restart, resources(:service => "shorewall")
 end
 
