@@ -143,6 +143,7 @@ template "/etc/default/shorewall" do
   owner "root"
   group "root"
   mode 0644
+  variables :start => node[:networking][:start_shorewall]
   notifies :restart, resources(:service => "shorewall")
 end
 

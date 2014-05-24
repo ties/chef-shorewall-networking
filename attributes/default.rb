@@ -2,6 +2,8 @@ default[:networking][:interfaces] = { }
 default[:networking][:nameservers] = %w{8.8.8.8 8.8.4.4 8.8.2.2}
 default[:networking][:search] = [ ]
 
+default[:networking][:start_shorewall] = true
+
 default[:networking][:gateway] = false
 #
 # accept SSH by default - adjust this when wanted.

@@ -1,7 +1,7 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 # Allow shorewall to start
-startup=1
+startup=<%= @start ? 1 : 0 %>
 
 # Program options
 OPTIONS=""
