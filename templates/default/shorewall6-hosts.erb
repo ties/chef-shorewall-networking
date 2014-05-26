@@ -10,3 +10,7 @@
 <% end -%>
 <% end -%>
 <% end -%>
+# ip-based zones
+<% @hosts.each do |host| %>
+<%= host[:name] %> 	<%= host[:interface] %>:<%= host[:ip_ranges].join(',') %>
+<% end %>

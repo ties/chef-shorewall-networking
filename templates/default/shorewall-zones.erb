@@ -4,3 +4,7 @@
 fw		firewall
 loc		<%= @type %>
 net		<%= @type %>
+# ip-based subzones from hosts
+<% @hosts.each do |host| %>
+<%= host[:name] %>:<%= host[:parent_zone] %> 	<%= @type %>
+<% end %>

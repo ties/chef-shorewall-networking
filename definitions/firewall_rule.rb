@@ -29,6 +29,7 @@ define :firewall_rule, :action => :accept do
 
   rule = Hash[
     :action => params[:action].to_s.upcase,
+    :macro => params[:macro],
     :source => params[:source],
     :dest => params[:dest],
     :proto => params[:proto],

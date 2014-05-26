@@ -160,7 +160,7 @@ template "/etc/shorewall/zones" do
   owner "root"
   group "root"
   mode 0644
-  variables :type => "ipv4"
+  variables :type => "ipv4", :hosts => []
   notifies :restart, resources(:service => "shorewall")
 end
 
@@ -178,7 +178,7 @@ template "/etc/shorewall/hosts" do
   owner "root"
   group "root"
   mode 0644
-  variables :zones => zones
+  variables :zones => zones, :hosts => []
   notifies :restart, resources(:service => "shorewall")
 end
 
@@ -254,7 +254,7 @@ if not node.interfaces(:family => :inet6).empty?
     owner "root"
     group "root"
     mode 0644
-    variables :type => "ipv6"
+    variables :type => "ipv6", :hosts => []
     notifies :restart, resources(:service => "shorewall6")
   end
 
@@ -271,7 +271,7 @@ if not node.interfaces(:family => :inet6).empty?
     owner "root"
     group "root"
     mode 0644
-    variables :zones => zones
+    variables :zones => zones, :hosts => []
     notifies :restart, resources(:service => "shorewall6")
   end
 

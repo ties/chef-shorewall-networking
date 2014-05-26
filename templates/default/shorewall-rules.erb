@@ -5,5 +5,9 @@ SECTION NEW
 # ACTION	SOURCE	DEST	PROTO		DEST		SOURCE	ORIGINAL	RATE
 #						PORTS		PORTS	DEST		LIMIT
 <% @rules.each do |r| -%>
+<% if r[:macro] %>
+<%= r[:macro] %>(<%= r[:action] %>)		<%= r[:source] %>	<%= r[:dest] %>	<%= r[:proto] %>		<%= r[:dest_ports] %>	<%= r[:source_ports] %>	-	<%= r[:rate_limit] %>
+<% else %>
 <%= r[:action] %>		<%= r[:source] %>	<%= r[:dest] %>	<%= r[:proto] %>		<%= r[:dest_ports] %>	<%= r[:source_ports] %>	-	<%= r[:rate_limit] %>
-<% end -%>
+<% end %>
+<% end %>
